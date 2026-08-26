@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import apiRouter from './routes';
+import { errorHandler } from './middlewares/error.middleware';
 
 const app: Application = express();
 
@@ -26,11 +27,6 @@ app.use((req: Request, res: Response, _next: NextFunction) => {
 });
 
 // error handling for all routes
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error('Error caught in app handler:', err);
-  const status = err.status || 500;
-  const message = err.message || 'Internal Server Error';
-  res.status(status).json({ success: false, message });
-});
+app.use(errorHandler);
 
 export default app;
