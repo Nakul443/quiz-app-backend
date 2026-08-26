@@ -1,6 +1,13 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
 import { ROLES } from '../constants/roles';
+import { validate } from '../middlewares/validate.middleware';
+import {
+  createQuestionSchema,
+  getQuestionsSchema,
+  updateQuestionSchema,
+  deleteQuestionSchema,
+} from '../validators/question.validator';
 import {
   createQuestion,
   getQuestions,
@@ -15,15 +22,15 @@ const router = Router({ mergeParams: true });
 router.use(authenticate, authorize(ROLES.ADMIN));
 
 // POST /quizzes/:id/questions - [admin only] create question
-router.post('/', createQuestion);
+router.post('/', validate(createQuestionSchema), createQuestion);
 
 // GET /quizzes/:id/questions - [admin only] get all questions for quiz
-router.get('/', getQuestions);
+router.get('/', validate(getQuestionsSchema), getQuestions);
 
 // PATCH /quizzes/:id/questions/:qid - [admin only] update question
-router.patch('/:qid', updateQuestion);
+router.patch('/:qid', validate(updateQuestionSchema), updateQuestion);
 
 // DELETE /quizzes/:id/questions/:qid - [admin only] delete question
-router.delete('/:qid', deleteQuestion);
+router.delete('/:qid', validate(deleteQuestionSchema), deleteQuestion);
 
 export default router;

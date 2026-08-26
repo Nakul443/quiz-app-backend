@@ -25,11 +25,12 @@ export class QuestionService {
       throw new ApiError(404, 'Quiz not found.');
     }
 
-    // App-enforced option validations
+    // check if the quiz has any questions
     if (!options || options.length < 2) {
       throw new ApiError(400, 'A question must have at least 2 options.');
     }
 
+    // check if there is exactly one correct option
     const correctOptions = options.filter((opt) => opt.is_correct === true);
     if (correctOptions.length !== 1) {
       throw new ApiError(400, 'A question must have exactly one correct option.');
