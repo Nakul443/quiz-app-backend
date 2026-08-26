@@ -1,6 +1,12 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
 import { ROLES } from '../constants/roles';
+import {
+  createQuestion,
+  getQuestions,
+  updateQuestion,
+  deleteQuestion,
+} from '../controllers/question.controller';
 
 // Enable mergeParams to access :id (quiz_id) from the parent router
 const router = Router({ mergeParams: true });
@@ -9,23 +15,15 @@ const router = Router({ mergeParams: true });
 router.use(authenticate, authorize(ROLES.ADMIN));
 
 // POST /quizzes/:id/questions - [admin only] create question
-router.post('/', (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: `Create question for quiz id: ${req.params.id}` });
-});
+router.post('/', createQuestion);
 
 // GET /quizzes/:id/questions - [admin only] get all questions for quiz
-router.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: `Get questions for quiz id: ${req.params.id}` });
-});
+router.get('/', getQuestions);
 
 // PATCH /quizzes/:id/questions/:qid - [admin only] update question
-router.patch('/:qid', (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: `Update question for qid: ${req.params.qid} on quiz id: ${req.params.id}` });
-});
+router.patch('/:qid', updateQuestion);
 
 // DELETE /quizzes/:id/questions/:qid - [admin only] delete question
-router.delete('/:qid', (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: `Delete question for qid: ${req.params.qid} on quiz id: ${req.params.id}` });
-});
+router.delete('/:qid', deleteQuestion);
 
 export default router;

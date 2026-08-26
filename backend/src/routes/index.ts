@@ -5,6 +5,7 @@ import questionRoutes from './question.routes';
 import attemptRoutes from './attempt.routes';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
 import { ROLES } from '../constants/roles';
+import { startAttempt } from '../controllers/attempt.controller';
 
 const router = Router();
 
@@ -17,9 +18,7 @@ router.use('/quizzes/:id/questions', questionRoutes);
 // Quiz attempts nested under quizzes
 // to start a brand new attempt
 // initially we don't have an attempt ID, so we need to create a new attempt for the quiz
-router.post('/quizzes/:id/attempts', authenticate, authorize(ROLES.USER), (req, res) => {
-  res.status(200).json({ success: true, message: `Start attempt for quiz id: ${req.params.id}` });
-});
+router.post('/quizzes/:id/attempts', authenticate, authorize(ROLES.USER), startAttempt);
 
 // Quiz routes
 router.use('/quizzes', quizRoutes);
