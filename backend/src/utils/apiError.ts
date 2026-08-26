@@ -1,0 +1,12 @@
+// centralized error handler
+// no need to manually call res.status(something something) in each controller
+
+export class ApiError extends Error {
+  public statusCode: number;
+
+  constructor(statusCode: number, message: string) {
+    super(message);
+    this.statusCode = statusCode;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}

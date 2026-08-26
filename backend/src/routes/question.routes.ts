@@ -1,7 +1,12 @@
 import { Router, Request, Response } from 'express';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { ROLES } from '../constants/roles';
 
 // Enable mergeParams to access :id (quiz_id) from the parent router
 const router = Router({ mergeParams: true });
+
+// Apply authentication and authorization for admin to all nested question routes
+router.use(authenticate, authorize(ROLES.ADMIN));
 
 // POST /quizzes/:id/questions - [admin only] create question
 router.post('/', (req: Request, res: Response) => {

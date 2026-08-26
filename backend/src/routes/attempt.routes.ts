@@ -1,9 +1,14 @@
 import { Router, Request, Response } from 'express';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { ROLES } from '../constants/roles';
 
 const router = Router();
 
+// Apply authentication and authorization for user to all attempt routes
+router.use(authenticate, authorize(ROLES.USER));
+
 // GET /attempts - logged-in user's attempt history
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (_req: Request, res: Response) => {
   res.status(200).json({ success: true, message: 'Get attempts history' });
 });
 
