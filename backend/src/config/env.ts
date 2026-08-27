@@ -8,8 +8,8 @@ dotenv.config();
 
 const envSchema = z.object({
   PORT: z.string().transform((val) => parseInt(val, 10)).default(5000),
-  MONGO_URI: z.string().url().default('mongodb://localhost:27017/quiz-app'),
-  JWT_SECRET: z.string().min(8).default('supersecretjwtkeychangeit'),
+  MONGO_URI: z.string().url(),
+  JWT_SECRET: z.string().min(8),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 });
 
