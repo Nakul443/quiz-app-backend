@@ -14,9 +14,25 @@ export const validate = (schema: z.ZodTypeAny) => {
       })) as any;
 
       // Assign sanitized/parsed data back to the request
-      req.body = parsed.body;
-      req.query = parsed.query;
-      req.params = parsed.params;
+      if (parsed.body !== undefined) {
+        req.body = parsed.body;
+      }
+      if (parsed.query !== undefined) {
+        Object.defineProperty(req, 'query', {
+          value: parsed.query,
+          writable: true,
+          configurable: true,
+          enumerable: true
+        });
+      }
+      if (parsed.params !== undefined) {
+        Object.defineProperty(req, 'params', {
+          value: parsed.params,
+          writable: true,
+          configurable: true,
+          enumerable: true
+        });
+      }
 
       next();
     } catch (error) {
